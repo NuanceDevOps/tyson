@@ -1,0 +1,50 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "hWfXxmroQrNn4kBIIYjb+pHGwRA=",
+			"path": "github.com/Azure/azure-sdk-for-go/storage",
+			"revision": "b4e3bc02a65dca5237084eba6e94f06a169f09c3",
+			"revisionTime": "2016-03-07T10:44:09-08:00"
+		},
+		{
+			"checksumSHA1": "7QUdu4Ev49Acqjq067IFXoY+cPg=",
+			"path": "github.com/Azure/go-autorest/autorest/date",
+			"revision": "c8bdeef20f02ae8a6494040b1a7838692648ec03",
+			"revisionTime": "2016-03-10T13:18:43-08:00"
+		},
+		{
+			"path": "github.com/Azure/go-autorest/autorest/date",
+			"revision": "c8bdeef20f02ae8a6494040b1a7838692648ec03",
+			"revisionTime": "2016-03-10T13:18:43-08:00"
+		},
+		{
+			"checksumSHA1": "Ev8qCsbFjDlMlX0N2tYAhYQFpUc=",
+			"path": "github.com/Azure/go-autorest/autorest/to",
+			"revision": "c8bdeef20f02ae8a6494040b1a7838692648ec03",
+			"revisionTime": "2016-03-10T13:18:43-08:00"
+		},
+		{
+			"path": "github.com/Azure/go-autorest/autorest/to",
+			"revision": "c8bdeef20f02ae8a6494040b1a7838692648ec03",
+			"revisionTime": "2016-03-10T13:18:43-08:00"
+		},
+		{
+			"checksumSHA1": "hKEzxF3LpDkQK//6n5rx/8b+DGM=",
+			"path": "github.com/dgrijalva/jwt-go",
+			"revision": "f62f64ea222e5e6d6d86421b5507b0862a3ebf7f",
+			"revisionTime": "2015-09-23T13:28:32-07:00"
+		},
+		{
+			"path": "github.com/dgrijalva/jwt-go",
+			"revision": "f62f64ea222e5e6d6d86421b5507b0862a3ebf7f",
+			"revisionTime": "2015-09-23T13:28:32-07:00"
+		},
+		{
+			"path": "github.com/dgrijalva/jwt-go",
+			"revision": "f62f64ea222e5e6d6d86421b5507b0862a3ebf7f",
+			"revisionTime": "2015-09-23T13:28:32-07:00"
+		}
+	]
+}

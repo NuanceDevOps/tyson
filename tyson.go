@@ -6,6 +6,8 @@ import (
 	"log"
 	"os"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/arm/compute"
 )
 
 var (
@@ -36,7 +38,8 @@ func main() {
 
 	if *random {
 		log.Println("Finding a random target to destroy.")
-		vm, err := client.RandomVirtualMachine(*regex, *resourceGroup)
+		var vm compute.VirtualMachine
+		vm, err = client.RandomVirtualMachine(*regex, *resourceGroup)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -53,9 +56,9 @@ func main() {
 		}
 	}
 
-	// err = client.DestroyVirtualMachine(*resourceGroup, *vmName)
-	// if err != nil {
-	// 	log.Fatalf("I was unable to destroy the virtual machine. %s", err)
-	// }
+	err = client.DestroyVirtualMachine(*resourceGroup, *vmName)
+	if err != nil {
+		log.Fatalf("I was unable to destroy the virtual machine. %s", err)
+	}
 
 }

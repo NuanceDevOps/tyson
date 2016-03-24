@@ -5,8 +5,11 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"math/rand"
 	"net/url"
+	"regexp"
 	"strings"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/arm/compute"
 	"github.com/Azure/azure-sdk-for-go/arm/storage"
@@ -104,4 +107,73 @@ func (c AzureClient) DestroyVirtualMachine(resourceGroup, name string) error {
 
 	log.Printf("Blob %s has been deleted.\n", blobName)
 	return nil
+}
+
+// ListAllVirtualMachines returns a slice of all virtual machines for a subscription
+func (c AzureClient) ListAllVirtualMachines() ([]compute.VirtualMachine, error) {
+	var machines []compute.VirtualMachine
+	result, err := c.virtualMachines.ListAll()
+	if err != nil {
+		return machines, fmt.Errorf("could not list virtual machines: %s", err)
+	}
+	machines = append(machines, *result.Value...)
+
+	// If we still have results, keep going until we have no more.
+	for result.NextLink != nil {
+		result, err = c.virtualMachines.ListAllNextResults(result)
+		if err != nil {
+			return machines, fmt.Errorf("could not list virtual machines: %s", err)
+		}
+		machines = append(machines, *result.Value...)
+	}
+	return machines, nil
+}
+
+// ListVirtualMachines returns a slice of virtual machines for a particular resource group
+func (c AzureClient) ListVirtualMachines(resourceGroupName string) ([]compute.VirtualMachine, error) {
+	result, err := c.virtualMachines.List(resourceGroupName)
+	if err != nil {
+		return *result.Value, err
+	}
+	return *result.Value, nil
+}
+
+// RandomVirtualMachine selects a random virtual machine based on regex string provided.
+// The group param will restrict the search to a particular resource group which may be "" for all groups.
+func (c AzureClient) RandomVirtualMachine(regex, group string) (compute.VirtualMachine, error) {
+	log.Println("Finding a random target to destroy.")
+	var machines []compute.VirtualMachine
+	var err error
+	// If we don't have a group, get all machines
+	if group == "" {
+		machines, err = c.ListAllVirtualMachines()
+		if err != nil {
+			return compute.VirtualMachine{}, err
+		}
+	} else {
+		machines, err = c.ListVirtualMachines(group)
+		if err != nil {
+			return compute.VirtualMachine{}, err
+		}
+	}
+
+	// Shuffle the slice so we get a random-ish order
+	rand.Seed(time.Now().UTC().UnixNano())
+	for i := range machines {
+		j := rand.Intn(i + 1)
+		machines[i], machines[j] = machines[j], machines[i]
+	}
+
+	// We should be in a fairly random order so just return first match.
+	for _, machine := range machines {
+		matched, err := regexp.MatchString(regex, *machine.Name)
+		if err != nil {
+			return compute.VirtualMachine{}, err
+		}
+		if matched {
+			log.Printf("Found target %s.", *machine.Name)
+			return machine, nil
+		}
+	}
+	return compute.VirtualMachine{}, fmt.Errorf("No VM found matching regex '%s' and/or in group '%s'", regex, group)
 }

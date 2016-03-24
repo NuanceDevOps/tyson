@@ -141,7 +141,6 @@ func (c AzureClient) ListVirtualMachines(resourceGroupName string) ([]compute.Vi
 // RandomVirtualMachine selects a random virtual machine based on regex string provided.
 // The group param will restrict the search to a particular resource group which may be "" for all groups.
 func (c AzureClient) RandomVirtualMachine(regex, group string) (compute.VirtualMachine, error) {
-	log.Println("Finding a random target to destroy.")
 	var machines []compute.VirtualMachine
 	var err error
 	// If we don't have a group, get all machines
@@ -171,7 +170,6 @@ func (c AzureClient) RandomVirtualMachine(regex, group string) (compute.VirtualM
 			return compute.VirtualMachine{}, err
 		}
 		if matched {
-			log.Printf("Found target %s.", *machine.Name)
 			return machine, nil
 		}
 	}

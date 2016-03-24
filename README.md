@@ -1,6 +1,10 @@
+![Tyson](http://blog.sfgate.com/smellthetruth/files/2013/11/mike-tyson-tongue-2011.jpg)
+
 # Tyson
 
 A small utility to destroy machines in Azure. Azure lacks a native feature to delete a VM and its underlying storage. This makes it impossible to destroy and re-create using ARM templates automatically.
+
+The tool also has a handy random mode for destroying random machines in your infrastructure. This is useful for creating a poor man's of Chaos Monkey. The randomness can be restricted to particular resource groups, machine names based on regex, or both.
 
 ## Usage
 
